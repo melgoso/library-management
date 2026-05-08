@@ -33,4 +33,13 @@ public class GlobalExceptionHandler {
                 .body("Validation error");
     }
 
+    @ExceptionHandler(LoanAlreadyReturnedException.class)
+    public ResponseEntity<String> handleReturnedLoan(
+            LoanAlreadyReturnedException ex
+    ) {
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
 }

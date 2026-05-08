@@ -1,6 +1,7 @@
 package com.andrea.librarymanagement.service;
 
 import com.andrea.librarymanagement.dto.LoanRequestDTO;
+import com.andrea.librarymanagement.exception.LoanAlreadyReturnedException;
 import com.andrea.librarymanagement.exception.NoAvailableCopiesException;
 import com.andrea.librarymanagement.exception.ResourceNotFoundException;
 import com.andrea.librarymanagement.model.Book;
@@ -56,6 +57,12 @@ public class LoanService {
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Loan not found"));
+
+        if (loan.getActualReturnDate() != null) {
+            throw new LoanAlreadyReturnedException(
+                    "This loan has already been returned"
+            );
+        }
 
         loan.setActualReturnDate(LocalDate.now());
 
