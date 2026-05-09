@@ -42,4 +42,14 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(ex.getMessage());
     }
+
+    @ExceptionHandler(DuplicateIsbnException.class)
+    public ResponseEntity<String> handleDuplicateIsbn(
+            DuplicateIsbnException ex
+    ) {
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
 }

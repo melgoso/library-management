@@ -1,6 +1,7 @@
 package com.andrea.librarymanagement.service;
 
 import com.andrea.librarymanagement.dto.BookRequestDTO;
+import com.andrea.librarymanagement.exception.DuplicateIsbnException;
 import com.andrea.librarymanagement.model.Book;
 import com.andrea.librarymanagement.repository.BookRepository;
 import com.andrea.librarymanagement.exception.ResourceNotFoundException;
@@ -18,6 +19,12 @@ public class BookService {
     }
 
     public Book createBook(BookRequestDTO dto) {
+
+        if (bookRepository.existsByIsbn(dto.isbn())) {
+            throw new DuplicateIsbnException(
+                    "A book with this ISBN already exists"
+            );
+        }
 
         Book book = new Book();
 
