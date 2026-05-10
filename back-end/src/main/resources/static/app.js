@@ -84,3 +84,37 @@ async function loanBook(bookId) {
         alert(error);
     }
 }
+
+async function loadActiveLoans(){
+
+    const userName = document.getElementById("activeLoansInput").value
+    if (!userName){return}
+
+    const response = await fetch(
+        `/api/loans/user/${userName}`
+    );
+
+    const activeLoans = await response.json();
+
+    const results = document.getElementById("active_loans_results");
+
+    results.innerHTML = "";
+
+    if (activeLoans.length === 0) {
+            results.innerHTML =
+                `<div class='alert alert-warning'>No active loans for ${userName}</div>`;
+            return;
+        }
+
+    activeLoans.forEach(loan => {
+
+        results.innerHTML += `
+            <div class="col-md-4">
+                <div class="card p-3 h-100 shadow-sm">
+                    <h4>${loan.book.title}</h4>
+                    <p><strong>Loan Date: </strong> ${loan.loanDate}</p>
+                    <p><strong>Expected Return Date: </strong>${loan.expectedReturnDate}</p>
+                </div>
+            </div>`;
+    });
+}
