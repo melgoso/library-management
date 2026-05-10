@@ -7,14 +7,14 @@ import java.time.LocalDate;
 
 public record LoanRequestDTO(
 
-        @NotNull
+        @NotNull(message = "Book id is required to loan a book")
         Long bookId,
 
-        @NotNull
+        @NotNull(message = "User name is required to loan a book")
         String userName,
 
         @NotNull
-        @Future
+        @Future(message = "Expected return date must be a future date")
         LocalDate expectedReturnDate
 ) {
 }

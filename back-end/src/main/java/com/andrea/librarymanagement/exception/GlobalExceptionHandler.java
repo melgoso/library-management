@@ -26,11 +26,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<String> handleValidation(
+            MethodArgumentNotValidException ex
+    ) {
+
+        String errorMessage = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .findFirst()
+                .map(error -> error.getDefaultMessage())
+                .orElse("Validation error");
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body("Validation error");
+                .body(errorMessage);
     }
 
     @ExceptionHandler(LoanAlreadyReturnedException.class)
